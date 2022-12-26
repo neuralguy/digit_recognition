@@ -1,0 +1,6 @@
+pygame
+matplotlib
+numpy
+tensorflow
+keras
+opencv-python
