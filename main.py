@@ -9,5 +9,5 @@ from img_change import change
 
 model = keras.models.load_model("model")
 
-pred = model.predict(change("imgs/9.png"))
+pred = model.predict(change("your path"))
 print(np.argmax(pred))
