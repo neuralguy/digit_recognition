@@ -9,5 +9,5 @@ from img_change import change
 
 model = keras.models.load_model("model")
 
-pred = model.predict(change("your path"))
-print(np.argmax(pred))
+#pred = model.predict(change("your path")) # Uncomment if you want to upload a photo
+#print(np.argmax(pred))
