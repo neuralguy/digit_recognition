@@ -5,5 +5,6 @@ is passed. In the drawing file, a program written with pygame that allows you to
 First download all files, then install required modules from requirements.txt.
 You can do this with two commands:
 1. git clone https://github.com/Timon69/digit_recognition.git
-2. pip install requirements.txt 
+2. pip install requirements.txt
+
 P.S. The program is completely written in python, but for some reason the github defines a different language
