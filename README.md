@@ -6,5 +6,6 @@ First download all files, then install required modules from requirements.txt.
 You can do this with two commands:
 1. git clone https://github.com/neuralguy/digit_recognition.git
 2. pip install requirements.txt
+3. Launch drawing.py file
 
 P.S. The program is completely written in python, but for some reason the github defines a different language
