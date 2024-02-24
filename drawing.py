@@ -1,7 +1,6 @@
 """
 Q - clear canvas
 LEFT MOUSE - draw
-RIGHT MOUSE - delete
 A - increase font size
 D - decrease font size
 """
@@ -35,14 +34,19 @@ def predict_and_display():
     global screen, fuld, font
     pred = model.predict(np.expand_dims(fuld, axis=0))
     pygame.display.set_caption(f"It's {str(np.argmax(pred))}")
+    
+def draw_grid():
+    for x in range(0, WIDTH, 20):  # Рисуем вертикальные линии
+        pygame.draw.line(screen, WHITE, (x, 0), (x, HEIGHT))
+    for y in range(0, HEIGHT, 20):  # Рисуем горизонтальные линии
+        pygame.draw.line(screen, WHITE, (0, y), (WIDTH, y))
 
 
 def main():
     global fuld, interval
-    field = []
+    field = np.zeros((28, 28), dtype=bool)
     font_size = 20
     draw = False
-    clear = False
     change_font = 0
     
     clock = pygame.time.Clock()
@@ -65,12 +69,8 @@ def main():
                 draw = True
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 draw = False
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-                clear = True
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
-                clear = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                field.clear()
+                field = np.zeros((28, 28))
                 fuld = np.zeros((28, 28))
             if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
                 change_font = 1
@@ -86,21 +86,22 @@ def main():
         elif change_font == -1 and font_size >= 2:
             font_size -= 0.2
 
-        if draw and [mx, my] not in field:
-            field.append([mx, my])
-            fuld[my // 20][mx // 20] = 1
-        if clear:
-            for i in field:
-                if pygame.rect.Rect(i[0] - font_size, i[1] - font_size, font_size * 2, font_size * 2).collidepoint([mx, my]):
-                    try:
-                        field.remove(i)
-                        fuld[i[0] // 20][i[1] // 20] = 0
-                    except:
-                        pass
-        for i in field:
-            pygame.draw.circle(screen, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) if random_color else (255, 255, 255), [int(i[0]), int(i[1])], font_size)
+        if draw:
+            grid_x = mx // 20
+            grid_y = my // 20
+            if 0 <= grid_x < 28 and 0 <= grid_y < 28:
+                field[grid_y][grid_x] = True
+                fuld[my // 20][mx // 20] = 1
+        
+        for y in range(28):
+            for x in range(28):
+                if field[y][x]:
+                    square_rect = pygame.Rect(x * 20, y * 20, 20, 20)
+                    pygame.draw.rect(screen, WHITE, square_rect)
+                        
         start_text = font.render(f"{str(int(clock.get_fps()))} FPS", False, GREEN)
         screen.blit(start_text, (0, 0))
+        draw_grid()
         pygame.display.update()
         clock.tick(FPS)
 
