@@ -20,5 +20,5 @@ def class_img(img):
 
 
 if __name__ == '__main__':
-    img = "imgs/numbers/2.png"    # path to your image
+    img = "imgs/numbers/4.png"
     class_img(img)
